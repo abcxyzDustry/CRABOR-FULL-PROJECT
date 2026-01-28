@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crabor - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5D8C3E;
+            --primary-dark: #4a7032;
+            --secondary: #FF6B35;
+            --light: #f8f9fa;
+            --dark: #333;
+            --gray: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: 10px;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: #f0f7e9;
+            color: var(--primary);
+        }
+        
+        .nav-item i {
+            width: 20px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .status-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-placeholder {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-active { background: #d4edda; color: #155724; }
+        .status-inactive { background: #f8d7da; color: #721c24; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        
+        /* Form controls */
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            width: 100%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            .nav-item {
+                flex-direction: column;
+                padding: 10px;
+                font-size: 0.8rem;
+                min-width: 80px;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">🦀</div>
+                    <div class="logo-text">Crabor Admin</div>
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar">AD</div>
+                    <div>
+                        <div style="font-weight: 600;">Administrator</div>
+                        <div style="font-size: 0.9rem; color: var(--gray);">Quản trị hệ thống</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="container">
+        <div class="dashboard">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Tổng quan</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="users">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="partners">
+                    <i class="fas fa-store"></i>
+                    <span>Đối tác</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="shippers">
+                    <i class="fas fa-motorcycle"></i>
+                    <span>Shipper</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Đơn hàng</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="finance">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Tài chính</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="banners">
+                    <i class="fas fa-ad"></i>
+                    <span>Quảng cáo</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài đặt</span>
+                </a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Tab -->
+                <div class="tab-content active" id="dashboard">
+                    <div class="status-card">
+                        <h2 class="status-title"><i class="fas fa-tachometer-alt"></i> Tổng quan hệ thống</h2>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--primary);">1.250</div>
+                                <div class="stat-label">Đơn hàng hôm nay</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--success);">187.5M</div>
+                                <div class="stat-label">Doanh thu hôm nay</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--secondary);">5.240</div>
+                                <div class="stat-label">Người dùng mới</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--warning);">37.5M</div>
+                                <div class="stat-label">Hoa hồng hôm nay</div>
+                            </div>
+                        </div>
+                        
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h3>Doanh thu 7 ngày qua</h3>
+                                    <select class="form-control" style="width: auto;">
+                                        <option>7 ngày</option>
+                                        <option>30 ngày</option>
+                                        <option>90 ngày</option>
+                                    </select>
+                                </div>
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-line" style="font-size: 3rem; margin-right: 15px;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Biểu đồ doanh thu</div>
+                                        <div>Tổng: 1.2 tỷ VNĐ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h3>Phân bố đơn hàng</h3>
+                                </div>
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-pie" style="font-size: 3rem; margin-right: 15px;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Biểu đồ phân bố</div>
+                                        <div>Theo khu vực & loại hình</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div class="tab-content" id="users">
+                    <div class="status-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 class="status-title"><i class="fas fa-users"></i> Quản lý người dùng</h2>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm người dùng..." style="width: 300px;">
+                        </div>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Loại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đăng ký</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>USR-001</td>
+                                    <td>Nguyễn Văn A</td>
+                                    <td>nguyenvana@email.com</td>
+                                    <td>0901234567</td>
+                                    <td>Khách hàng</td>
+                                    <td><span class="status-badge status-active">Hoạt động</span></td>
+                                    <td>15/01/2024</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">Xem</button>
+                                        <button class="btn btn-sm btn-warning">Khóa</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Partners Tab -->
+                <div class="tab-content" id="partners">
+                    <div class="status-card">
+                        <div class="tabs">
+                            <button class="tab active" data-partner-tab="all">Tất cả (150)</button>
+                            <button class="tab" data-partner-tab="pending">Chờ duyệt (5)</button>
+                            <button class="tab" data-partner-tab="active">Đang hoạt động (140)</button>
+                            <button class="tab" data-partner-tab="suspended">Tạm ngừng (5)</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="allPartners">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên cửa hàng</th>
+                                        <th>Chủ sở hữu</th>
+                                        <th>Doanh thu tháng</th>
+                                        <th>Đánh giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>PTN-001</td>
+                                        <td>Pizza Hut Trần Duy Hưng</td>
+                                        <td>Trần Văn B</td>
+                                        <td>187.5M</td>
+                                        <td>4.7 ⭐</td>
+                                        <td><span class="status-badge status-active">Hoạt động</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Chi tiết</button>
+                                            <button class="btn btn-sm btn-warning">Tạm ngừng</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shippers Tab -->
+                <div class="tab-content" id="shippers">
+                    <div class="status-card">
+                        <div class="tabs">
+                            <button class="tab active" data-shipper-tab="registrations">Đăng ký mới (12)</button>
+                            <button class="tab" data-shipper-tab="active">Đang hoạt động (250)</button>
+                            <button class="tab" data-shipper-tab="offline">Ngoại tuyến (45)</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="shipperRegistrations">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đăng ký</th>
+                                        <th>Họ tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>CMND/CCCD</th>
+                                        <th>Biển số xe</th>
+                                        <th>Phí đăng ký</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>SHP-REG-001</td>
+                                        <td>Trần Văn Sơn</td>
+                                        <td>0909876543</td>
+                                        <td>012345678901</td>
+                                        <td>29-A1 123.45</td>
+                                        <td>700.000đ</td>
+                                        <td><span class="status-badge status-pending">Chờ duyệt</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success" onclick="approveShipper('SHP-REG-001')">Duyệt</button>
+                                            <button class="btn btn-sm btn-danger">Từ chối</button>
+                                            <button class="btn btn-sm btn-primary">Xem</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Tab -->
+                <div class="tab-content" id="finance">
+                    <div class="status-card">
+                        <h2 class="status-title"><i class="fas fa-money-bill-wave"></i> Quản lý tài chính</h2>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--success);">5.2B</div>
+                                <div class="stat-label">Tổng doanh thu tháng</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--primary);">1.04B</div>
+                                <div class="stat-label">Hoa hồng (20%)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--secondary);">750M</div>
+                                <div class="stat-label">Phí giao hàng</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="color: var(--warning);">120M</div>
+                                <div class="stat-label">Chi trả shipper</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <h3>Giao dịch gần đây</h3>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã giao dịch</th>
+                                        <th>Loại</th>
+                                        <th>Người dùng</th>
+                                        <th>Số tiền</th>
+                                        <th>Phương thức</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TRX-2024-00123</td>
+                                        <td>Thanh toán đơn hàng</td>
+                                        <td>Nguyễn Văn A</td>
+                                        <td>189.000đ</td>
+                                        <td>Momo</td>
+                                        <td><span class="status-badge status-active">Thành công</span></td>
+                                        <td>14:30 15/01/2024</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banners Tab -->
+                <div class="tab-content" id="banners">
+                    <div class="status-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 class="status-title"><i class="fas fa-ad"></i> Quản lý quảng cáo & Banner</h2>
+                            <button class="btn btn-primary" id="addBannerBtn">
+                                <i class="fas fa-plus"></i> Tạo banner mới
+                            </button>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">Banner đang chạy</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">125.4K</div>
+                                <div class="stat-label">Lượt hiển thị hôm nay</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">2.4%</div>
+                                <div class="stat-label">Tỉ lệ nhấp (CTR)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">45.8M</div>
+                                <div class="stat-label">Doanh thu từ QC</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <h3>Banner đang hoạt động</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
+                                <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8E53 100%); color: white; padding: 20px; border-radius: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                        <div>
+                                            <div style="font-weight: 600; margin-bottom: 5px;">Pizza Thứ 5 Giảm 50%</div>
+                                            <div style="font-size: 0.9rem; opacity: 0.9;">Hiển thị cho: Tất cả người dùng</div>
+                                        </div>
+                                        <span class="status-badge status-active" style="background: white; color: #FF6B35;">Đang chạy</span>
+                                    </div>
+                                    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 0.9rem;">Lượt xem: 12.4K</div>
+                                            <div style="font-size: 0.9rem;">Lượt nhấp: 298</div>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm" style="background: white; color: #FF6B35;">Chỉnh sửa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-content" id="settings">
+                    <div class="status-card">
+                        <h2 class="status-title"><i class="fas fa-cog"></i> Cài đặt hệ thống</h2>
+                        
+                        <div class="tabs">
+                            <button class="tab active" data-setting-tab="general">Chung</button>
+                            <button class="tab" data-setting-tab="commission">Hoa hồng</button>
+                            <button class="tab" data-setting-tab="delivery">Giao hàng</button>
+                            <button class="tab" data-setting-tab="payment">Thanh toán</button>
+                            <button class="tab" data-setting-tab="notifications">Thông báo</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="generalSettings">
+                            <div style="max-width: 600px;">
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tên nền tảng</label>
+                                    <input type="text" class="form-control" value="Crabor">
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Phí đăng ký shipper</label>
+                                    <input type="number" class="form-control" value="700000">
+                                    <div style="font-size: 0.9rem; color: var(--gray); margin-top: 5px;">Phí kích hoạt tài khoản shipper (không hoàn lại)</div>
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tỷ lệ hoa hồng đối tác</label>
+                                    <input type="number" class="form-control" value="20">
+                                    <div style="font-size: 0.9rem; color: var(--gray); margin-top: 5px;">% trên mỗi đơn hàng thành công</div>
+                                </div>
+                                
+                                <button class="btn btn-primary">Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner Modal -->
+    <div id="bannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1002; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 20px;">Tạo banner quảng cáo mới</h2>
+            <form id="bannerForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tiêu đề banner</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Mô tả</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Hình ảnh URL</label>
+                    <input type="text" class="form-control" placeholder="https://...">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Liên kết</label>
+                    <input type="text" class="form-control" placeholder="https://...">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Đối tượng hiển thị</label>
+                    <select class="form-control">
+                        <option>Tất cả người dùng</option>
+                        <option>Chỉ khách hàng</option>
+                        <option>Chỉ đối tác</option>
+                        <option>Chỉ shipper</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Ngày bắt đầu</label>
+                    <input type="date" class="form-control">
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Tạo banner</button>
+                    <button type="button" class="btn btn-outline" id="closeBannerModal">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = item.dataset.tab;
+                
+                // Update active nav item
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show selected tab
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Partner tabs
+        const partnerTabs = document.querySelectorAll('[data-partner-tab]');
+        partnerTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                partnerTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Shipper tabs
+        const shipperTabs = document.querySelectorAll('[data-shipper-tab]');
+        shipperTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                shipperTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Setting tabs
+        const settingTabs = document.querySelectorAll('[data-setting-tab]');
+        settingTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                settingTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Banner modal
+        const bannerModal = document.getElementById('bannerModal');
+        const addBannerBtn = document.getElementById('addBannerBtn');
+        const closeBannerModal = document.getElementById('closeBannerModal');
+        const bannerForm = document.getElementById('bannerForm');
+
+        addBannerBtn.addEventListener('click', () => {
+            bannerModal.style.display = 'flex';
+        });
+
+        closeBannerModal.addEventListener('click', () => {
+            bannerModal.style.display = 'none';
+        });
+
+        bannerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Đã tạo banner mới!');
+            bannerModal.style.display = 'none';
+            bannerForm.reset();
+        });
+
+        // Close modal when clicking outside
+        bannerModal.addEventListener('click', (e) => {
+            if (e.target === bannerModal) {
+                bannerModal.style.display = 'none';
+            }
+        });
+
+        // Shipper approval
+        function approveShipper(registrationId) {
+            if (confirm(`Xác nhận duyệt đăng ký ${registrationId}?`)) {
+                alert(`Đã duyệt shipper ${registrationId}. Tài khoản đã được kích hoạt.`);
+                // In real app, make API call
+            }
+        }
+
+        // Simulate real-time data updates
+        setInterval(() => {
+            // Update stats occasionally
+            if (Math.random() > 0.7) {
+                const statCards = document.querySelectorAll('.stat-value');
+                statCards.forEach(card => {
+                    const current = parseInt(card.textContent.replace(/[^\d]/g, ''));
+                    if (!isNaN(current)) {
+                        const change = Math.floor(Math.random() * 10) - 3;
+                        const newValue = Math.max(0, current + change);
+                        card.textContent = newValue.toLocaleString() + (card.textContent.includes('M') ? 'M' : '');
+                    }
+                });
+            }
+        }, 10000); // Update every 10 seconds
+    </script>
+</body>
+</html>
