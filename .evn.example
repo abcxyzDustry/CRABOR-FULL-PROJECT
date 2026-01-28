@@ -1,0 +1,5 @@
+MONGODB_URI=mongodb+srv://123456789a:123456789a@cluster0.tsgu8lv.mongodb.net/crabor?retryWrites=true&w=majority
+SESSION_SECRET=your-super-secret-session-key-here
+JWT_SECRET=your-jwt-secret-key-here
+NODE_ENV=development
+PORT=3000
