@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crabor - Tổng Quan Dự Án</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+        
+        /* Menu Button */
+        .menu-button {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #5D8C3E;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(93, 140, 62, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-button:hover {
+            background-color: #4a7032;
+            transform: scale(1.05);
+        }
+        
+        .menu-line {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Menu Dropdown */
+        .menu-dropdown {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 220px;
+            overflow: hidden;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-dropdown.active {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .menu-item {
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background-color: #f1f8e9;
+            color: #5D8C3E;
+            padding-left: 30px;
+        }
+        
+        .menu-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Back Button */
+        .back-btn {
+            background-color: #5D8C3E;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(93, 140, 62, 0.3);
+        }
+        
+        .back-btn:hover {
+            background-color: #4a7032;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(93, 140, 62, 0.4);
+        }
+        
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #5D8C3E;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            color: #5D8C3E;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #5D8C3E;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Main Content */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #5D8C3E;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h2 i {
+            font-size: 1.4rem;
+        }
+        
+        /* Progress Section */
+        .progress-section {
+            margin-bottom: 25px;
+        }
+        
+        .progress-item {
+            margin-bottom: 20px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .progress-status {
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .status-done {
+            background-color: #e7f6ec;
+            color: #2e7d32;
+        }
+        
+        .status-preparing {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            background-color: #5D8C3E;
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        /* Text Content */
+        .content-text {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        .highlight {
+            color: #5D8C3E;
+            font-weight: 600;
+        }
+        
+        /* Lists */
+        ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        ul li {
+            color: #444;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        /* Competition Section */
+        .competitors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .competitor-tag {
+            background-color: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #5D8C3E;
+            font-weight: 500;
+        }
+        
+        /* Market Model */
+        .model-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .model-item {
+            background-color: #f9f9f9;
+            padding: 18px 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            color: #444;
+        }
+        
+        .model-item:hover {
+            background-color: #f1f8e9;
+            border-color: #c5e1a5;
+        }
+        
+        .model-icon {
+            font-size: 2rem;
+            color: #5D8C3E;
+            margin-bottom: 12px;
+        }
+        
+        /* Conclusion */
+        .conclusion {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            line-height: 1.8;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 1.05rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Legal Policy Page Styles */
+        .legal-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .legal-header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #5D8C3E 0%, #4a7032 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .legal-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .legal-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Legal Tabs */
+        .legal-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            gap: 5px;
+        }
+        
+        .legal-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .legal-tab:hover {
+            color: #5D8C3E;
+        }
+        
+        .legal-tab.active {
+            color: #5D8C3E;
+            border-bottom: 3px solid #5D8C3E;
+        }
+        
+        /* Legal Content */
+        .legal-content {
+            display: none;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .legal-content.active {
+            display: block;
+        }
+        
+        .policy-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .policy-section:last-child {
+            border-bottom: none;
+        }
+        
+        .policy-section h3 {
+            color: #5D8C3E;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .policy-section h3 i {
+            font-size: 1.1rem;
+        }
+        
+        .policy-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .policy-section ul {
+            margin: 15px 0 15px 20px;
+        }
+        
+        .policy-section li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #444;
+        }
+        
+        .policy-section li strong {
+            color: #333;
+        }
+        
+        .policy-note {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #5D8C3E;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .policy-warning {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-left: 4px solid #ffb300;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .policy-title {
+            font-size: 1.8rem;
+            color: #5D8C3E;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .policy-subtitle {
+            font-size: 1.3rem;
+            color: #4a7032;
+            margin: 20px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .menu-button {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .menu-dropdown {
+                top: 75px;
+                right: 20px;
+            }
+            
+            .legal-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .legal-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .legal-content {
+                padding: 20px;
+            }
+            
+            .policy-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Button -->
+    <div class="menu-button" id="menuButton">
+        <div class="menu-line"></div>
+        <div class="menu-line"></div>
+        <div class="menu-line"></div>
+    </div>
+    
+    <!-- Menu Dropdown -->
+    <div class="menu-dropdown" id="menuDropdown">
+        <button class="menu-item" onclick="showPage('legal')">
+            <i class="fas fa-gavel"></i>
+            <span>Chính Sách Pháp Lý</span>
+        </button>
+    </div>
+    
+    <!-- Main Page (Home) -->
+    <div id="home-page" class="page-content active">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-crab"></i>
+                </div>
+                <h1>Dự Án Crabor</h1>
+                <p class="tagline">Hệ sinh thái giao đồ ăn với linh vật chú cua - Nhanh nhẹn, tin cậy và bền vững</p>
+            </header>
+            
+            <div class="content-grid">
+                <!-- Tiến độ dự án -->
+                <section class="card">
+                    <h2><i class="fas fa-tasks"></i> Tiến Độ Dự Án</h2>
+                    <div class="progress-section">
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Concept & Thương Hiệu</span>
+                                <span class="progress-status status-done">Đã hoàn thành</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress1"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Linh Vật & Nhận Diện</span>
+                                <span class="progress-status status-done">Đã hoàn thành</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress2"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Xây Dựng Pháp Lý Ứng Dụng</span>
+                                <span class="progress-status status-done">Đã hoàn thành</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress3"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Thành Lập Công Ty TNHH Crabor</span>
+                                <span class="progress-status status-preparing">Đang chuẩn bị</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress4"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Tài Khoản Doanh Nghiệp</span>
+                                <span class="progress-status status-preparing">Đang chuẩn bị</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress5"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span class="progress-label">Phát Triển Ứng Dụng</span>
+                                <span class="progress-status status-preparing">Đang chuẩn bị</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Tổng quan dự án -->
+                <section class="card">
+                    <h2><i class="fas fa-project-diagram"></i> Tổng Quan Dự Án</h2>
+                    <div class="content-text">
+                        <p><span class="highlight">Crabor</span> là một nền tảng giao đồ ăn (Delivery Food) với thương hiệu được xây dựng xung quanh linh vật <span class="highlight">chú cua</span> - biểu tượng cho sự nhanh nhẹn, chắc chắn và bền bỉ.</p>
+                        
+                        <p>Dự án tập trung vào việc tạo ra một hệ sinh thái khép kín gồm:</p>
+                        <ul>
+                            <li>Ứng dụng đặt đồ ăn cho người dùng cuối</li>
+                            <li>Nền tảng quản lý cho đối tác của crabor</li>
+                            <li>Ứng dụng điều phối và nhận đơn cho tài xế</li>
+                            <li>Hệ thống thanh toán tích hợp đa phương thức</li>
+                        </ul>
+                        
+                        <p>Khác với các sàn TMĐT đa ngành truyền thống, Crabor chọn <span class="highlight">phân khúc giao đồ ăn</span> làm trọng tâm để tránh cạnh tranh trực tiếp với các ông lớn và tập trung nguồn lực vào một lĩnh vực có nhu cầu cao, tần suất sử dụng lớn.</p>
+                    </div>
+                </section>
+                
+                <!-- Cạnh tranh & thị trường -->
+                <section class="card">
+                    <h2><i class="fas fa-bullseye"></i> Thị Trường & Đối Thủ Cạnh Tranh</h2>
+                    <div class="content-text">
+                        <p>Crabor sẽ tham gia vào thị trường <span class="highlight">giao đồ ăn trực tuyến tại Việt Nam</span> - một thị trường đang phát triển mạnh với sự tham gia của cả người dùng thành thị lẫn nông thôn.</p>
+                        
+                        <p>Các đối thủ cạnh tranh chính:</p>
+                        <div class="competitors">
+                            <div class="competitor-tag">GrabFood</div>
+                            <div class="competitor-tag">ShopeeFood</div>
+                            <div class="competitor-tag">GoFood (Gojek)</div>
+                            <div class="competitor-tag">Now (Foody)</div>
+                            <div class="competitor-tag">Loship</div>
+                        </div>
+                        
+                        <p style="margin-top: 20px;">Chiến lược cạnh tranh của Crabor tập trung vào:</p>
+                        <ul>
+                            <li><span class="highlight">Trải nghiệm người dùng đơn giản, trực quan</span></li>
+                            <li><span class="highlight">Mức phí hoa hồng hợp lý</span> cho đối tác của crabor</li>
+                            <li><span class="highlight">Chính sách ưu đãi tốt</span> cho tài xế giao hàng</li>
+                            <li>Xây dựng <span class="highlight">thương hiệu gần gũi, đáng tin cậy</span> qua linh vật chú cua</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Mô hình kinh doanh -->
+                <section class="card">
+                    <h2><i class="fas fa-chart-line"></i> Mô Hình Kinh Doanh</h2>
+                    <div class="content-text">
+                        <p>Crabor hoạt động theo mô hình <span class="highlight">Delivery Food Platform</span> - Nền tảng kết nối người dùng, nhà hàng và tài xế giao hàng.</p>
+                        
+                        <div class="model-details">
+                            <div class="model-item">
+                                <div class="model-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div>Kết nối người dùng với đối tác</div>
+                            </div>
+                            
+                            <div class="model-item">
+                                <div class="model-icon">
+                                    <i class="fas fa-motorcycle"></i>
+                                </div>
+                                <div>Điều phối tài xế giao hàng tối ưu</div>
+                            </div>
+                            
+                            <div class="model-item">
+                                <div class="model-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div>Xử lý thanh toán đa phương thức</div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 20px;">Nguồn thu chính của Crabor đến từ:</p>
+                        <ul>
+                            <li><span class="highlight">Phí hoa hồng</span> trên mỗi đơn hàng thành công (đối tác của crabor)</li>
+                            <li><span class="highlight">Phí dịch vụ giao hàng</span> (từ người dùng)</li>
+                            <li><span class="highlight">Phí quảng cáo và ưu tiên hiển thị</span> (đối tác crabor)</li>
+                            <li><span class="highlight">Gói thành viên</span> với các đặc quyền cho người dùng thân thiết</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Kết luận -->
+            <section class="card">
+                <h2><i class="fas fa-flag-checkered"></i> Kết Luận</h2>
+                <div class="content-text">
+                    <p>Dự án Crabor đã có những bước khởi đầu vững chắc với concept thương hiệu rõ ràng và linh vật độc đáo. <strong>Đặc biệt, hệ thống pháp lý đã được hoàn thiện 100%</strong> với đầy đủ điều khoản cho 3 đối tượng: Người dùng, Đối tác và Shipper.</p>
+                    
+                    <p>Việc lựa chọn phân khúc giao đồ ăn thay vì sàn TMĐT đa ngành là một quyết định chiến lược đúng đắn, giúp tập trung nguồn lực vào thị trường mục tiêu cụ thể.</p>
+                    
+                    <p class="conclusion">Với hệ thống pháp lý hoàn chỉnh, mô hình kinh doanh rõ ràng và chiến lược cạnh tranh tập trung, Crabor có tiềm năng trở thành một ứng dụng giao đồ ăn được yêu thích, mang đến trải nghiệm khác biệt với thương hiệu chú cua nhanh nhẹn, đáng tin cậy và bền vững.</p>
+                </div>
+            </section>
+            
+            <footer>
+                <p>© 2026 Dự Án Crabor. Tài liệu nội bộ - Bảo mật thông tin.</p>
+                <p>Trạng thái: <strong>Hệ thống pháp lý đã hoàn thành 100%</strong> - Đang trong giai đoạn chuẩn bị thành lập công ty và phát triển ứng dụng</p>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Legal Policy Page -->
+    <div id="legal-page" class="page-content">
+        <div class="legal-container">
+            <button class="back-btn" onclick="showPage('home')">
+                <i class="fas fa-arrow-left"></i> Về Trang Chủ
+            </button>
+            
+            <div class="legal-header">
+                <h1 class="legal-title"><i class="fas fa-gavel"></i> BỘ CHÍNH SÁCH PHÁP LÝ CRABOR</h1>
+                <p class="legal-subtitle">Áp dụng cho toàn bộ người dùng, đối tác và shipper khi sử dụng nền tảng Crabor</p>
+            </div>
+            
+            <!-- Legal Tabs -->
+            <div class="legal-tabs">
+                <button class="legal-tab active" data-tab="general-tab">Điều Khoản Chung</button>
+                <button class="legal-tab" data-tab="user-tab">Người Dùng</button>
+                <button class="legal-tab" data-tab="partner-tab">Đối Tác</button>
+                <button class="legal-tab" data-tab="shipper-tab">Shipper</button>
+                <button class="legal-tab" data-tab="dispute-tab">Giải Quyết Tranh Chấp</button>
+                <button class="legal-tab" data-tab="legal-tab">Pháp Lý TMĐT</button>
+                <button class="legal-tab" data-tab="faq-tab">FAQ</button>
+            </div>
+            
+            <!-- Tab Điều Khoản Chung -->
+            <div id="general-tab" class="legal-content active">
+                <h2 class="policy-title"><i class="fas fa-file-contract"></i> PHẦN I. ĐIỀU KHOẢN SỬ DỤNG CHUNG</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-info-circle"></i> 1. Giới thiệu</h3>
+                    <p>Crabor là nền tảng công nghệ trung gian kết nối Người dùng, Đối tác cung cấp dịch vụ/nhà hàng và Đối tác giao hàng (Shipper). Crabor không trực tiếp bán hàng, không trực tiếp giao hàng và không phải là bên lao động với shipper.</p>
+                    <p>Việc truy cập, đăng ký và sử dụng ứng dụng Crabor đồng nghĩa với việc bạn đã đọc, hiểu và đồng ý với toàn bộ điều khoản này.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-bullseye"></i> 2. Phạm vi áp dụng</h3>
+                    <p>Điều khoản này áp dụng cho:</p>
+                    <ul>
+                        <li>Người dùng đặt dịch vụ/đặt món</li>
+                        <li>Đối tác nhà hàng/quán ăn</li>
+                        <li>Đối tác giao hàng (shipper)</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-edit"></i> 3. Quyền sửa đổi</h3>
+                    <p>Crabor có quyền thay đổi, cập nhật điều khoản vào bất kỳ thời điểm nào. Phiên bản mới có hiệu lực ngay khi được công bố trên ứng dụng/website.</p>
+                    <div class="policy-warning">
+                        <strong>Lưu ý:</strong> Người dùng, đối tác và shipper có trách nhiệm tự cập nhật các thay đổi.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Người Dùng -->
+            <div id="user-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-user"></i> PHẦN II. CHÍNH SÁCH DÀNH CHO NGƯỜI DÙNG</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-check-circle"></i> 1. Điều kiện sử dụng</h3>
+                    <ul>
+                        <li>Từ 18 tuổi trở lên, có đầy đủ năng lực hành vi dân sự</li>
+                        <li>Cung cấp thông tin cá nhân chính xác</li>
+                        <li>Không sử dụng Crabor cho mục đích trái pháp luật</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-shopping-cart"></i> 2. Quy trình đặt đơn</h3>
+                    <ul>
+                        <li>Khi người dùng xác nhận đặt hàng, đơn hàng được xem là đã phát sinh hiệu lực giao dịch</li>
+                        <li>Giá hiển thị bao gồm: giá món/dịch vụ, phí giao hàng, các phụ phí (nếu có)</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-ban"></i> 3. Hủy đơn & hoàn tiền</h3>
+                    <ul>
+                        <li>Người dùng chỉ được hủy đơn trong các trạng thái hệ thống cho phép</li>
+                        <li>Trường hợp nhà hàng đã chuẩn bị món hoặc shipper đã nhận đơn, Crabor có quyền từ chối hoàn tiền hoặc hoàn một phần</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> 4. Trách nhiệm & giới hạn trách nhiệm</h3>
+                    <p>Crabor không chịu trách nhiệm đối với:</p>
+                    <ul>
+                        <li>Chất lượng, an toàn thực phẩm</li>
+                        <li>Dị ứng, vấn đề sức khỏe cá nhân</li>
+                        <li>Hành vi cá nhân của shipper hoặc đối tác</li>
+                        <li>Thiệt hại gián tiếp, mất mát ngoài phạm vi giao dịch</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-database"></i> 5. Dữ liệu cá nhân</h3>
+                    <p>Crabor thu thập và sử dụng dữ liệu người dùng nhằm:</p>
+                    <ul>
+                        <li>Vận hành dịch vụ</li>
+                        <li>Cải thiện trải nghiệm</li>
+                        <li>Marketing và chăm sóc khách hàng</li>
+                    </ul>
+                    <p>Crabor cam kết bảo mật dữ liệu theo quy định pháp luật hiện hành.</p>
+                </div>
+            </div>
+            
+            <!-- Tab Đối Tác -->
+            <div id="partner-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-store"></i> PHẦN III. CHÍNH SÁCH DÀNH CHO ĐỐI TÁC (NHÀ HÀNG)</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-handshake"></i> 1. Điều kiện hợp tác</h3>
+                    <ul>
+                        <li>Có giấy phép kinh doanh hợp pháp</li>
+                        <li>Đảm bảo an toàn vệ sinh thực phẩm</li>
+                        <li>Chịu trách nhiệm về nguồn gốc và chất lượng sản phẩm</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-money-bill-wave"></i> 2. Hoa hồng & thanh toán</h3>
+                    <ul>
+                        <li>Crabor thu 20% hoa hồng trên mỗi đơn hàng thành công</li>
+                        <li>Thanh toán cho đối tác được thực hiện theo chu kỳ do Crabor quy định</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-clipboard-check"></i> 3. Nghĩa vụ đối tác</h3>
+                    <ul>
+                        <li>Cung cấp món đúng mô tả, đúng giá</li>
+                        <li>Chuẩn bị món đúng thời gian cam kết</li>
+                        <li>Không tự ý hủy đơn hoặc gian lận</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-image"></i> 4. Nội dung & thương hiệu</h3>
+                    <p>Đối tác đồng ý cho Crabor sử dụng:</p>
+                    <ul>
+                        <li>Tên thương hiệu</li>
+                        <li>Logo</li>
+                        <li>Hình ảnh sản phẩm</li>
+                    </ul>
+                    <p>cho mục đích hiển thị, marketing trên nền tảng.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-times-circle"></i> 5. Chấm dứt hợp tác</h3>
+                    <p>Crabor có quyền tạm ngưng hoặc chấm dứt hợp tác nếu đối tác:</p>
+                    <ul>
+                        <li>Vi phạm pháp luật</li>
+                        <li>Gian lận</li>
+                        <li>Gây ảnh hưởng nghiêm trọng đến uy tín nền tảng</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Tab Shipper -->
+            <div id="shipper-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-motorcycle"></i> PHẦN IV. CHÍNH SÁCH DÀNH CHO SHIPPER</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-id-card"></i> 1. Tư cách pháp lý</h3>
+                    <ul>
+                        <li>Shipper là đối tác độc lập, không phải nhân viên của Crabor</li>
+                        <li>Tự chịu trách nhiệm về thuế, bảo hiểm và rủi ro cá nhân</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-credit-card"></i> 2. Phí đăng ký</h3>
+                    <ul>
+                        <li>Phí đăng ký ban đầu: 700.000 VNĐ</li>
+                        <li>Bao gồm: kích hoạt tài khoản, đồng phục, xác minh & lưu lưu trữ và xác minh thông tin giấy tờ cần thiết</li>
+                    </ul>
+                    <div class="policy-warning">
+                        <strong>Lưu ý quan trọng:</strong> Phí 700.000 VNĐ là phí kích hoạt dịch vụ, không phải tiền đặt cọc lao động.
+                    </div>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-chart-line"></i> 3. Thu nhập & khấu trừ</h3>
+                    <ul>
+                        <li>Phí giao hàng được tính theo khoảng cách: ~3.000đ/km (giai đoạn đầu)</li>
+                        <li>Crabor khấu trừ 10% phí giao hàng như phí nền tảng</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-tasks"></i> 4. Nghĩa vụ shipper</h3>
+                    <ul>
+                        <li>Giao hàng đúng đơn, đúng người nhận</li>
+                        <li>Không gian lận GPS, không nhận tiền ngoài hệ thống</li>
+                        <li>Tuân thủ luật giao thông và quy định ứng dụng</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-gavel"></i> 5. Kỷ luật & xử lý vi phạm</h3>
+                    <p>Crabor có quyền:</p>
+                    <ul>
+                        <li>Cảnh cáo</li>
+                        <li>Tạm khóa</li>
+                        <li>Khóa vĩnh viễn tài khoản shipper</li>
+                    </ul>
+                    <p>trong trường hợp vi phạm nghiêm trọng, không cần báo trước.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-shield-alt"></i> 6. Miễn trừ trách nhiệm</h3>
+                    <p>Crabor không chịu trách nhiệm đối với:</p>
+                    <ul>
+                        <li>Tai nạn giao thông</li>
+                        <li>Tranh chấp giữa shipper và người dùng</li>
+                        <li>Vi phạm pháp luật cá nhân của shipper</li>
+                    </ul>
+                </div>
+                
+                <h3 class="policy-subtitle">BỔ SUNG QUY ĐỊNH VỀ PHÍ KÍCH HOẠT TÀI KHOẢN SHIPPER (700.000 VNĐ)</h3>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-info-circle"></i> 1. Bản chất của phí 700.000 VNĐ</h3>
+                    <ul>
+                        <li>Phí 700.000 VNĐ là chi phí cố định để kích hoạt và duy trì trạng thái hoạt động của tài khoản Shipper</li>
+                        <li>Khoản phí này không phải tiền lương, tiền đặt cọc lao động, hay bảo đảm thực hiện nghĩa vụ lao động</li>
+                        <li>Phí bao gồm: kích hoạt tài khoản, cấp quyền truy cập ứng dụng, đồng phục, xác minh thông tin, hỗ trợ vận hành</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-lock"></i> 4. Khóa tài khoản do không duy trì đủ phí kích hoạt</h3>
+                    <ul>
+                        <li>Khi tài khoản bị khóa do không đủ điều kiện phí kích hoạt, Shipper không thể nhận đơn, truy cập chức năng vận hành</li>
+                        <li>Việc mở lại tài khoản yêu cầu bổ sung đủ phí kích hoạt theo mức hiện hành</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-times-circle"></i> 5. Không hoàn lại phí trong đa số trường hợp</h3>
+                    <ul>
+                        <li>Phí kích hoạt 700.000 VNĐ không được hoàn lại trong trường hợp Shipper tự ý ngừng hoạt động hoặc vi phạm điều khoản</li>
+                        <li>Trường hợp hoàn phí chỉ được xem xét khi lỗi hoàn toàn phát sinh từ hệ thống Crabor</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Tab Giải Quyết Tranh Chấp -->
+            <div id="dispute-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-balance-scale"></i> PHẦN V. GIẢI QUYẾT TRANH CHẤP & SỰ CỐ</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-users"></i> 1. Nguyên tắc chung</h3>
+                    <ul>
+                        <li>Crabor đóng vai trò nền tảng trung gian</li>
+                        <li>Mọi sự cố được xử lý trên nguyên tắc: minh bạch – có bằng chứng – theo mức độ lỗi</li>
+                        <li>Crabor có quyền đưa ra quyết định cuối cùng dựa trên dữ liệu hệ thống</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-exclamation-circle"></i> 2. Các loại sự cố phổ biến</h3>
+                    <p><strong>Đối với người dùng:</strong></p>
+                    <ul>
+                        <li>Giao thiếu/sai món</li>
+                        <li>Món kém chất lượng, đổ vỡ</li>
+                        <li>Giao hàng trễ</li>
+                        <li>Shipper có hành vi không phù hợp</li>
+                    </ul>
+                    
+                    <p><strong>Đối với đối tác:</strong></p>
+                    <ul>
+                        <li>Shipper không đến lấy hàng</li>
+                        <li>Đơn bị hủy không hợp lệ</li>
+                        <li>Gian lận khuyến mãi từ người dùng</li>
+                    </ul>
+                    
+                    <p><strong>Đối với shipper:</strong></p>
+                    <ul>
+                        <li>Khách không nhận hàng</li>
+                        <li>Địa chỉ sai</li>
+                        <li>Đối tác chuẩn bị món chậm</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-clipboard-list"></i> 3. Quy trình khiếu nại</h3>
+                    <ul>
+                        <li>Khiếu nại phải được gửi trong vòng 24 giờ kể từ thời điểm hoàn tất/hủy đơn</li>
+                        <li>Cung cấp đầy đủ bằng chứng: hình ảnh, chat, lịch sử đơn</li>
+                        <li>Crabor có thời gian xử lý từ 3–7 ngày làm việc</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-money-bill-wave"></i> PHẦN VIII. CHÍNH SÁCH HOÀN TIỀN</h3>
+                    
+                    <p><strong>1. Trường hợp được hoàn tiền:</strong></p>
+                    <ul>
+                        <li>Đơn bị hủy do lỗi hệ thống</li>
+                        <li>Đối tác xác nhận không thể cung cấp dịch vụ</li>
+                        <li>Shipper không thể hoàn thành đơn và không có shipper thay thế</li>
+                    </ul>
+                    
+                    <p><strong>2. Trường hợp không hoàn tiền:</strong></p>
+                    <ul>
+                        <li>Người dùng hủy đơn sau khi đối tác đã chuẩn bị món</li>
+                        <li>Shipper đã nhận đơn và đang giao</li>
+                        <li>Lý do cá nhân từ phía người dùng</li>
+                    </ul>
+                    
+                    <p><strong>3. Hình thức hoàn tiền:</strong></p>
+                    <ul>
+                        <li>Hoàn về phương thức thanh toán ban đầu hoặc ví Crabor (nếu có)</li>
+                        <li>Thời gian xử lý: 5–10 ngày làm việc</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Tab Pháp Lý TMĐT -->
+            <div id="legal-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-scale-balanced"></i> PHẦN XII. CHUẨN HÓA PHÁP LÝ THEO QUY ĐỊNH TMĐT VIỆT NAM</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-building"></i> 1. Vai trò của Crabor</h3>
+                    <ul>
+                        <li>Crabor là sàn giao dịch thương mại điện tử theo Nghị định 52/2013/NĐ-CP (và văn bản sửa đổi)</li>
+                        <li>Crabor không trực tiếp bán hàng, không trực tiếp tuyển dụng Shipper</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-info-circle"></i> 2. Nghĩa vụ công khai thông tin</h3>
+                    <p>Crabor công khai đầy đủ:</p>
+                    <ul>
+                        <li>Thông tin pháp nhân vận hành</li>
+                        <li>Điều khoản sử dụng</li>
+                        <li>Chính sách thanh toán, hoàn tiền, khiếu nại</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-user-shield"></i> 3. Bảo vệ người tiêu dùng</h3>
+                    <ul>
+                        <li>Có cơ chế tiếp nhận và xử lý phản ánh</li>
+                        <li>Lưu trữ lịch sử giao dịch tối thiểu theo quy định pháp luật</li>
+                    </ul>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-file-signature"></i> 4. Đăng ký Bộ Công Thương</h3>
+                    <p>Crabor thực hiện thủ tục đăng ký sàn TMĐT tại Cổng thông tin Bộ Công Thương. Các chính sách trong bộ này là căn cứ pháp lý khi nộp hồ sơ.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-flag"></i> PHẦN VI. HIỆU LỰC</h3>
+                    <p>Điều khoản này có hiệu lực kể từ ngày được công bố trên nền tảng Crabor.</p>
+                    <p>Người dùng, đối tác và shipper có trách nhiệm đọc kỹ trước khi sử dụng dịch vụ.</p>
+                </div>
+            </div>
+            
+            <!-- Tab FAQ -->
+            <div id="faq-tab" class="legal-content">
+                <h2 class="policy-title"><i class="fas fa-question-circle"></i> PHẦN X. FAQ PHÁP LÝ (CÂU HỎI THƯỜNG GẶP)</h2>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-utensils"></i> 1. Crabor có chịu trách nhiệm về chất lượng đồ ăn không?</h3>
+                    <p><strong>Không.</strong> Trách nhiệm thuộc về đối tác cung cấp.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-user-tie"></i> 2. Shipper có phải nhân viên Crabor không?</h3>
+                    <p><strong>Không.</strong> Shipper là đối tác độc lập.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-money-bill"></i> 3. Phí đăng ký shipper có được hoàn lại không?</h3>
+                    <p>Phí đăng ký không hoàn lại trừ khi có chính sách đặc biệt được công bố riêng.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-lock"></i> 4. Crabor có quyền khóa tài khoản không cần báo trước không?</h3>
+                    <p><strong>Có,</strong> trong trường hợp vi phạm nghiêm trọng hoặc ảnh hưởng đến hệ thống.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-shield-alt"></i> 5. Dữ liệu cá nhân của tôi có được bảo mật không?</h3>
+                    <p>Crabor cam kết bảo mật theo quy định pháp luật Việt Nam.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-handshake"></i> 6. Khi có tranh chấp thì giải quyết thế nào?</h3>
+                    <p>Ưu tiên thương lượng, nếu không thành sẽ giải quyết theo pháp luật Việt Nam.</p>
+                </div>
+                
+                <h3 class="policy-subtitle">FAQ RIÊNG DÀNH CHO NGƯỜI DÙNG</h3>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-store"></i> Crabor có phải là bên bán đồ ăn không?</h3>
+                    <p><strong>Không.</strong> Crabor là nền tảng trung gian kết nối Người dùng với Đối tác.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-times-circle"></i> Vì sao tôi không được hoàn tiền khi hủy đơn?</h3>
+                    <p>Nếu đơn đã được Đối tác chuẩn bị hoặc Shipper đã nhận giao, hệ thống có thể từ chối hoàn tiền.</p>
+                </div>
+                
+                <h3 class="policy-subtitle">FAQ RIÊNG DÀNH CHO ĐỐI TÁC</h3>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-percent"></i> Crabor thu bao nhiêu % hoa hồng?</h3>
+                    <p>Hiện tại là 20%/đơn hàng, có thể điều chỉnh theo thỏa thuận.</p>
+                </div>
+                
+                <div class="policy-section">
+                    <h3><i class="fas fa-ban"></i> Tôi có thể tự ý hủy đơn không?</h3>
+                    <p><strong>Không.</strong> Việc hủy đơn không hợp lệ có thể bị phạt hoặc giảm hiển thị.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khởi tạo thanh tiến trình với hiệu ứng
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressItems = [
+                { id: 'progress1', value: 100 },
+                { id: 'progress2', value: 100 },
+                { id: 'progress3', value: 100 },
+                { id: 'progress4', value: 30 },
+                { id: 'progress5', value: 25 },
+                { id: 'progress6', value: 15 }
+            ];
+            
+            // Hiệu ứng load thanh tiến trình
+            setTimeout(() => {
+                progressItems.forEach(item => {
+                    const progressFill = document.getElementById(item.id);
+                    if (progressFill) {
+                        progressFill.style.width = item.value + '%';
+                    }
+                });
+            }, 500);
+            
+            // Thêm hiệu ứng cho các card khi cuộn trang
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Áp dụng hiệu ứng cho tất cả card
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Xử lý menu dropdown
+            const menuButton = document.getElementById('menuButton');
+            const menuDropdown = document.getElementById('menuDropdown');
+            
+            // Mở/đóng menu dropdown
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuDropdown.classList.toggle('active');
+            });
+            
+            // Đóng menu khi click ra ngoài
+            document.addEventListener('click', () => {
+                menuDropdown.classList.remove('active');
+            });
+            
+            // Ngăn đóng menu khi click vào menu
+            menuDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            
+            // Đóng menu bằng phím ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuDropdown.classList.remove('active');
+                }
+            });
+            
+            // Xử lý chuyển trang
+            window.showPage = function(page) {
+                // Ẩn tất cả các trang
+                document.querySelectorAll('.page-content').forEach(p => {
+                    p.classList.remove('active');
+                });
+                
+                // Hiển thị trang được chọn
+                document.getElementById(page + '-page').classList.add('active');
+                
+                // Đóng menu dropdown
+                menuDropdown.classList.remove('active');
+                
+                // Cuộn lên đầu trang
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Nếu là trang legal, khởi tạo tabs
+                if (page === 'legal') {
+                    initializeLegalTabs();
+                }
+            };
+            
+            // Khởi tạo tabs cho trang legal
+            function initializeLegalTabs() {
+                const legalTabs = document.querySelectorAll('.legal-tab');
+                const legalContents = document.querySelectorAll('.legal-content');
+                
+                legalTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabId = tab.getAttribute('data-tab');
+                        
+                        // Xóa active class từ tất cả tabs và contents
+                        legalTabs.forEach(t => t.classList.remove('active'));
+                        legalContents.forEach(content => content.classList.remove('active'));
+                        
+                        // Thêm active class cho tab và content được chọn
+                        tab.classList.add('active');
+                        document.getElementById(tabId).classList.add('active');
+                    });
+                });
+            }
+            
+            // Khởi tạo tabs nếu đang ở trang legal
+            if (document.getElementById('legal-page').classList.contains('active')) {
+                initializeLegalTabs();
+            }
+        });
+    </script>
+</body>
+</html>
