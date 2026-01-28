@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crabor - Shipper Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5D8C3E;
+            --primary-dark: #4a7032;
+            --secondary: #FF6B35;
+            --light: #f8f9fa;
+            --dark: #333;
+            --gray: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: 10px;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: #f0f7e9;
+            color: var(--primary);
+        }
+        
+        .nav-item i {
+            width: 20px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .status-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .online-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toggle-switch {
+            width: 60px;
+            height: 30px;
+            background: #ddd;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: var(--success);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            left: 32px;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Orders */
+        .orders-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .order-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-ready { background: #d1ecf1; color: #0c5460; }
+        .status-picked { background: #d4edda; color: #155724; }
+        .status-delivering { background: #cce5ff; color: #004085; }
+        
+        .order-details {
+            margin-bottom: 15px;
+        }
+        
+        .order-restaurant {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .order-items {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .order-address {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-total {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: #f0f7e9;
+        }
+        
+        /* Map Container */
+        .map-container {
+            height: 300px;
+            background: #e9ecef;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        /* Earnings */
+        .earnings-chart {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            .nav-item {
+                flex-direction: column;
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">🦀</div>
+                    <div class="logo-text">Crabor Shipper</div>
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar">TS</div>
+                    <div>
+                        <div style="font-weight: 600;">Trần Văn Sơn</div>
+                        <div style="font-size: 0.9rem; color: var(--gray);">Shipper</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="container">
+        <div class="dashboard">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Tổng quan</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Đơn hàng mới</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Đơn đang giao</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Đã hoàn thành</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Thu nhập</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài đặt</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Trợ giúp</span>
+                </a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Status Card -->
+                <div class="status-card">
+                    <div class="status-header">
+                        <div class="status-title">Trạng thái làm việc</div>
+                        <div class="online-toggle">
+                            <span>Trực tuyến</span>
+                            <div class="toggle-switch active" id="onlineToggle"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Đơn hôm nay</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">356k</div>
+                            <div class="stat-label">Thu nhập hôm nay</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">4.9</div>
+                            <div class="stat-label">Đánh giá</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">Tỉ lệ thành công</div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-right: 15px;"></i>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Bản đồ vị trí</div>
+                            <div>Đang hiển thị khu vực hoạt động của bạn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Orders -->
+                <div class="status-card">
+                    <div class="status-header">
+                        <div class="status-title">Đơn hàng mới gần bạn</div>
+                    </div>
+                    
+                    <div class="orders-grid" id="newOrders">
+                        <!-- Order 1 -->
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-id">#ORD-2024-00123</div>
+                                <div class="order-status status-ready">Sẵn sàng lấy hàng</div>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-restaurant">Pizza Hut - 45 Trần Duy Hưng</div>
+                                <div class="order-items">1 Pizza Hải Sản, 2 Coca</div>
+                                <div class="order-address">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    12 Nguyễn Văn Linh, Q. Thanh Xuân, Hà Nội
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--secondary);">
+                                    <i class="fas fa-clock"></i> Giao trong 30 phút
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div class="order-total">189.000đ</div>
+                                <div class="order-actions">
+                                    <button class="btn btn-outline">Xem chi tiết</button>
+                                    <button class="btn btn-primary">Nhận đơn</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Order 2 -->
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-id">#ORD-2024-00124</div>
+                                <div class="order-status status-pending">Đang chuẩn bị</div>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-restaurant">KFC - 123 Trần Đại Nghĩa</div>
+                                <div class="order-items">Combo Gà Rán 5 Miếng</div>
+                                <div class="order-address">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    78 Đường Láng, Q. Đống Đa, Hà Nội
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--secondary);">
+                                    <i class="fas fa-clock"></i> Giao trong 45 phút
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div class="order-total">145.000đ</div>
+                                <div class="order-actions">
+                                    <button class="btn btn-outline">Xem chi tiết</button>
+                                    <button class="btn btn-primary" disabled>Đang chờ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Delivery -->
+                <div class="status-card">
+                    <div class="status-header">
+                        <div class="status-title">Đơn hàng đang giao</div>
+                    </div>
+                    
+                    <div class="orders-grid" id="currentOrders">
+                        <!-- Current Order -->
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-id">#ORD-2024-00122</div>
+                                <div class="order-status status-delivering">Đang giao hàng</div>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-restaurant">Phở 10 Lý Quốc Sư</div>
+                                <div class="order-items">2 Phở Bò, 1 Nước Chanh</div>
+                                <div class="order-address">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    45 Nguyễn Chí Thanh, Q. Ba Đình, Hà Nội
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                    <div style="flex: 1; height: 5px; background: #e9ecef; border-radius: 3px; overflow: hidden;">
+                                        <div style="width: 65%; height: 100%; background: var(--primary);"></div>
+                                    </div>
+                                    <span style="font-size: 0.9rem;">65% hoàn thành</span>
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <div>
+                                    <div style="font-size: 0.9rem; color: var(--gray);">Còn lại</div>
+                                    <div class="order-total">~12 phút</div>
+                                </div>
+                                <div class="order-actions">
+                                    <button class="btn btn-outline">Gọi khách</button>
+                                    <button class="btn btn-primary">Đã giao</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings -->
+                <div class="status-card">
+                    <div class="status-header">
+                        <div class="status-title">Thu nhập tuần này</div>
+                    </div>
+                    
+                    <div class="earnings-chart">
+                        <i class="fas fa-chart-bar" style="font-size: 3rem; margin-right: 15px;"></i>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Biểu đồ thu nhập</div>
+                            <div>Tổng thu nhập: 2.450.000đ</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">
+                        <div>
+                            <div style="font-weight: 600;">T2</div>
+                            <div style="color: var(--primary);">350k</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600;">T3</div>
+                            <div style="color: var(--primary);">420k</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600;">T4</div>
+                            <div style="color: var(--primary);">380k</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600;">T5</div>
+                            <div style="color: var(--primary);">450k</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Online toggle
+        const onlineToggle = document.getElementById('onlineToggle');
+        onlineToggle.addEventListener('click', () => {
+            onlineToggle.classList.toggle('active');
+            const isOnline = onlineToggle.classList.contains('active');
+            alert(isOnline ? 'Bạn đang trực tuyến' : 'Bạn đang ngoại tuyến');
+        });
+
+        // Sample orders data
+        const orders = [
+            {
+                id: 'ORD-2024-00123',
+                status: 'ready',
+                restaurant: 'Pizza Hut - 45 Trần Duy Hưng',
+                items: '1 Pizza Hải Sản, 2 Coca',
+                address: '12 Nguyễn Văn Linh, Q. Thanh Xuân, Hà Nội',
+                time: '30 phút',
+                total: '189.000đ'
+            },
+            {
+                id: 'ORD-2024-00124',
+                status: 'pending',
+                restaurant: 'KFC - 123 Trần Đại Nghĩa',
+                items: 'Combo Gà Rán 5 Miếng',
+                address: '78 Đường Láng, Q. Đống Đa, Hà Nội',
+                time: '45 phút',
+                total: '145.000đ'
+            }
+        ];
+
+        // Handle order acceptance
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-primary') && e.target.textContent === 'Nhận đơn') {
+                const orderCard = e.target.closest('.order-card');
+                const orderId = orderCard.querySelector('.order-id').textContent;
+                
+                if (confirm(`Xác nhận nhận đơn ${orderId}?`)) {
+                    e.target.textContent = 'Đang đến lấy hàng';
+                    e.target.disabled = true;
+                    e.target.style.backgroundColor = '#6c757d';
+                    
+                    // Move to current orders
+                    const currentOrders = document.getElementById('currentOrders');
+                    orderCard.querySelector('.order-status').className = 'order-status status-picked';
+                    orderCard.querySelector('.order-status').textContent = 'Đã nhận đơn';
+                    
+                    // Update buttons
+                    const footer = orderCard.querySelector('.order-footer');
+                    footer.innerHTML = `
+                        <div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">Trạng thái</div>
+                            <div class="order-total">Đang đến lấy hàng</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-outline">Chi tiết</button>
+                            <button class="btn btn-primary" id="pickupOrder">Đã lấy hàng</button>
+                        </div>
+                    `;
+                    
+                    alert(`Bạn đã nhận đơn ${orderId}`);
+                }
+            }
+            
+            if (e.target.id === 'pickupOrder') {
+                const orderCard = e.target.closest('.order-card');
+                const orderId = orderCard.querySelector('.order-id').textContent;
+                
+                if (confirm(`Xác nhận đã lấy hàng đơn ${orderId}?`)) {
+                    orderCard.querySelector('.order-status').className = 'order-status status-delivering';
+                    orderCard.querySelector('.order-status').textContent = 'Đang giao hàng';
+                    
+                    // Update buttons
+                    const footer = orderCard.querySelector('.order-footer');
+                    footer.innerHTML = `
+                        <div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">Đang giao</div>
+                            <div class="order-total">~15 phút</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-outline">Gọi khách</button>
+                            <button class="btn btn-primary" id="deliverOrder">Đã giao</button>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (e.target.id === 'deliverOrder') {
+                const orderCard = e.target.closest('.order-card');
+                const orderId = orderCard.querySelector('.order-id').textContent;
+                
+                if (confirm(`Xác nhận đã giao hàng đơn ${orderId}?`)) {
+                    alert(`Đơn ${orderId} đã được giao thành công!`);
+                    orderCard.remove();
+                }
+            }
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Add new random order
+            const newOrders = [
+                {
+                    id: `ORD-2024-00${Math.floor(Math.random() * 900 + 100)}`,
+                    status: 'ready',
+                    restaurant: ['McDonald\'s', 'Lotteria', 'Jollibee', 'Texas Chicken'][Math.floor(Math.random() * 4)],
+                    items: ['Combo 1', 'Combo 2', 'Combo 3'][Math.floor(Math.random() * 3)],
+                    address: 'Địa chỉ ngẫu nhiên',
+                    time: `${Math.floor(Math.random() * 30 + 15)} phút`,
+                    total: `${(Math.floor(Math.random() * 200 + 100) * 1000).toLocaleString()}đ`
+                }
+            ];
+            
+            // Add new order occasionally
+            if (Math.random() > 0.7) {
+                const order = newOrders[0];
+                const newOrdersDiv = document.getElementById('newOrders');
+                
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                orderCard.innerHTML = `
+                    <div class="order-header">
+                        <div class="order-id">${order.id}</div>
+                        <div class="order-status status-ready">Sẵn sàng lấy hàng</div>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-restaurant">${order.restaurant}</div>
+                        <div class="order-items">${order.items}</div>
+                        <div class="order-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${order.address}
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--secondary);">
+                            <i class="fas fa-clock"></i> Giao trong ${order.time}
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">${order.total}</div>
+                        <div class="order-actions">
+                            <button class="btn btn-outline">Xem chi tiết</button>
+                            <button class="btn btn-primary">Nhận đơn</button>
+                        </div>
+                    </div>
+                `;
+                
+                newOrdersDiv.insertBefore(orderCard, newOrdersDiv.firstChild);
+                
+                // Notification
+                if (document.hidden) {
+                    console.log(`Đơn hàng mới: ${order.id}`);
+                }
+            }
+        }, 30000); // Check every 30 seconds
+    </script>
+</body>
+</html>
